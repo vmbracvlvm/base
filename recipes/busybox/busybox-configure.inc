@@ -317,6 +317,14 @@ do_configure_busybox_dhclient () {
 BUSYBOX_SIMPLE_USE_FLAGS += "ifupdown_external_dhcp=1::\
 CONFIG_FEATURE_IFUPDOWN_EXTERNAL_DHCP"
 
+RECIPE_FLAGS += "busybox_disable_external_dhcp_startup"
+DEFAULT_USE_busybox_disable_external_dhcp_startup = False
+DO_CONFIGURE_PREFUNCS:>USE_busybox_disable_external_dhcp_startup = " do_configure_busybox_disable_external_dhcp_startup"
+do_configure_busybox_disable_external_dhcp_startup () {
+        sed -i -e 's/^\(CONFIG_FEATURE_IFUPDOWN_EXTERNAL_DHCP\)=y/\1=n/' \
+        .config
+}
+
 RECIPE_FLAGS += "busybox_udhcpc6"
 # USE flag: enable udhcpc6 client
 DEFAULT_USE_busybox_udhcpc6 = False
